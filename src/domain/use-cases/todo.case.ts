@@ -1,12 +1,15 @@
 import { TodoEntity } from './../entities/todo.entity';
 import { UpdateTodoCommand } from './../commands/update-todo.command';
 import { AddTodoCommand } from './../commands/add-todo.command';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { TodoAdapter } from '../adapters/persistance/todo.adapter';
 
 @Injectable()
 export class TodoUseCase {
-  constructor(private readonly persistanceAdapter: TodoAdapter) {}
+  constructor(
+    @Inject(TodoAdapter.INJECTION_KEY)
+    private readonly persistanceAdapter: TodoAdapter,
+  ) {}
 
   add(todo: AddTodoCommand): void {
     this.persistanceAdapter.add({

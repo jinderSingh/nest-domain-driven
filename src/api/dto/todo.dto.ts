@@ -1,4 +1,4 @@
-export interface TodoDto {
+export class TodoDto {
   id: number;
   title: string;
   description: string;

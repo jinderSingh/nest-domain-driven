@@ -1,10 +1,13 @@
 import { TodoPersistanceAdapter } from './adapters/todo.adapter';
-import { TodoAdapter } from 'src/domain/adapters/persistance/todo.adapter';
-import { Global, Module } from '@nestjs/common';
+import { TodoAdapter } from '../domain/adapters/persistance/todo.adapter';
+import { Module } from '@nestjs/common';
 
-@Global()
+const providers = [
+  { provide: TodoAdapter.INJECTION_KEY, useClass: TodoPersistanceAdapter },
+];
+
 @Module({
-  providers: [{ provide: TodoAdapter, useClass: TodoPersistanceAdapter }],
-  exports: [TodoAdapter],
+  providers,
+  exports: [...providers],
 })
 export class PersistanceModule {}
