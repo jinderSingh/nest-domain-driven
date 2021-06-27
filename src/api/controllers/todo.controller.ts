@@ -1,12 +1,13 @@
-import { UpdateTodoCommand } from './../../domain/commands/update-todo.command';
+import { UpdateTodoCommand } from '@domain/commands/update-todo.command';
 import { TodoDto } from './../dto/todo.dto';
-import { TodoUseCase } from './../../domain/use-cases/todo.case';
-import { AddTodoCommand } from './../../domain/commands/add-todo.command';
+import { TodoUseCase } from '@domain/use-cases/todo.case';
+import { AddTodoCommand } from '@domain/commands/add-todo.command';
 import {
   Body,
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Post,
   Put,
@@ -21,9 +22,9 @@ export class TodoController {
     this.todoUseCase.add(addCommand);
   }
 
-  @Get('{id}')
-  findById(@Param('id') id: number): TodoDto {
-    return this.todoUseCase.findById(id);
+  @Get(':id')
+  findById(@Param('id') id: number): TodoDto | undefined {
+    return this.todoUseCase.findById(+id);
   }
 
   @Get()
@@ -38,13 +39,14 @@ export class TodoController {
       }));
   }
 
-  @Put('{id}')
+  @Put(':id')
   update(@Param('id') id: number, @Body() command: UpdateTodoCommand): void {
-    this.todoUseCase.update(id, command);
+    this.todoUseCase.update(+id, command);
   }
 
-  @Delete('{id}')
+  @Delete(':id')
+  @HttpCode(204)
   remove(@Param('id') id: number): void {
-    this.todoUseCase.remove(id);
+    this.todoUseCase.remove(+id);
   }
 }

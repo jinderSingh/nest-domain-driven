@@ -8,5 +8,5 @@ export abstract class TodoAdapter {
   abstract update(id: number, todo: TodoEntity): number;
   abstract remove(id: number): void;
   abstract findAll(): TodoEntity[];
-  abstract findById(id: number): TodoEntity | null;
+  abstract findById(id: number): TodoEntity | undefined;
 }

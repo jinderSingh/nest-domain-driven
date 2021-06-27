@@ -1,33 +1,24 @@
 import { TodoEntity } from './../entities/todo.entity';
 import { UpdateTodoCommand } from './../commands/update-todo.command';
 import { AddTodoCommand } from './../commands/add-todo.command';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { TodoAdapter } from '../adapters/persistance/todo.adapter';
 
 @Injectable()
 export class TodoUseCase {
-  constructor(
-    @Inject(TodoAdapter.INJECTION_KEY)
-    private readonly persistanceAdapter: TodoAdapter,
-  ) {}
+  constructor(private readonly persistanceAdapter: TodoAdapter) {}
 
   add(todo: AddTodoCommand): void {
     this.persistanceAdapter.add({
       ...todo,
-      id: Date.now(),
+      id: null,
       createdAt: null,
       updateAt: null,
     });
   }
 
   update(id: number, todo: UpdateTodoCommand): void {
-    // TODO @Singh validate if todo is already completed
     const todoToUpdate = this.persistanceAdapter.findById(id);
-
-    if (!todoToUpdate) {
-      throw new Error(`No todo found with id: ${id}`);
-    }
-
     this.persistanceAdapter.update(id, { ...todoToUpdate, ...todo });
   }
 
@@ -39,7 +30,7 @@ export class TodoUseCase {
     return this.persistanceAdapter.findAll();
   }
 
-  findById(id: number): TodoEntity | null {
+  findById(id: number): TodoEntity | undefined {
     return this.persistanceAdapter.findById(id);
   }
 }

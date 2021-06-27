@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { TodoEntity } from './../../domain/entities/todo.entity';
-import { TodoAdapter } from 'src/domain/adapters/persistance/todo.adapter';
+import { EntityNotFoundException } from '@domain/exceptions/entity-not-found.exception';
+import { TodoEntity } from '@domain/entities/todo.entity';
+import { TodoAdapter } from '@domain/adapters/persistance/todo.adapter';
 
 export class TodoPersistanceAdapter extends TodoAdapter {
-  private readonly todos: TodoEntity[] = [];
+  private todos: TodoEntity[] = [];
 
   add(todo: TodoEntity): number {
     const id = Date.now();
@@ -12,15 +12,12 @@ export class TodoPersistanceAdapter extends TodoAdapter {
   }
 
   update(id: number, todo: TodoEntity): number {
-    const todoToUpdate = this.todos.findIndex((t) => t.id === id);
-
-    if (!todoToUpdate) {
-      throw new Error(`No todo found with id: ${id}`);
-    }
-
-    this.todos[todoToUpdate] = {
-      ...this.todos[todoToUpdate],
+    const todoToUpdateIndex = this.todos.findIndex((t) => +t.id === +id);
+    const todoToUpdate = this.todos[todoToUpdateIndex];
+    this.todos[todoToUpdateIndex] = {
+      ...todoToUpdate,
       ...todo,
+      id: todoToUpdate.id,
       updateAt: Date.now(),
     };
 
@@ -28,14 +25,20 @@ export class TodoPersistanceAdapter extends TodoAdapter {
   }
 
   remove(id: number): void {
-    this.todos.filter((todo) => todo.id !== id);
+    this.todos = this.todos.filter((todo) => todo.id !== id);
   }
 
   findAll(): TodoEntity[] {
-    return [...this.todos];
+    return this.todos || [];
   }
 
-  findById(id: number): TodoEntity | null {
-    return this.todos.find((todo) => todo.id === id);
+  findById(id: number): TodoEntity | undefined {
+    const todo = this.todos.find((todo) => +todo.id === +id);
+
+    if (!todo) {
+      throw new EntityNotFoundException(`No todo found with id ${id}`);
+    }
+
+    return todo;
   }
 }
