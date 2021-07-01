@@ -1,12 +1,33 @@
 ## Description
 
-Domain driven NestJs [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[Nest](https://github.com/nestjs/nest) Domain Driven project.
 
-## Installation
+## Dependencies
 
-```bash
-$ npm install
-```
+1. Mongoose
+2. Graphql
+
+## Structure
+
+Domain module doesn't import anything from other modules, instead other modules depends on this one.
+
+1. Api
+
+   - Controllers
+     - Inject usecases from domain module.
+     
+   - Resolvers
+     - Inject usecases from domain module.
+
+2. Domain(Business Logic)
+
+   - Defines use case.
+   - Defines persistance api by adding abstract clases. (`NO IMPLEMENTATION`).
+
+3. Persistance
+
+   - Implement abstract clases defined by `Domain Module`.
+   - Contains `DB` configuration, models, schemas and etc...
 
 ## Running the app
 
@@ -34,20 +55,8 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## Graphql
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Licene
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
-
-## Project
-
-This project is created for learning, right now it should not be used as template for production apps.
+This project was created for learning purpose, right now it should not be used as template for production apps.
