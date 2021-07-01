@@ -23,30 +23,30 @@ export class TodoController {
   }
 
   @Get(':id')
-  findById(@Param('id') id: number): TodoDto | undefined {
-    return this.todoUseCase.findById(+id);
+  findById(@Param('id') id: string): Promise<TodoDto | undefined> {
+    return this.todoUseCase.findById(id);
   }
 
   @Get()
-  findAll(): TodoDto[] {
-    return this.todoUseCase
-      .findAll()
-      .map(({ id, completed, title, description }) => ({
+  findAll(): Promise<TodoDto[]> {
+    return this.todoUseCase.findAll().then((res) =>
+      res.map(({ id, completed, title, description }) => ({
         id,
         title,
         description,
         completed,
-      }));
+      })),
+    );
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() command: UpdateTodoCommand): void {
-    this.todoUseCase.update(+id, command);
+  update(@Param('id') id: string, @Body() command: UpdateTodoCommand): void {
+    this.todoUseCase.update(id, command);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: number): void {
-    this.todoUseCase.remove(+id);
+  remove(@Param('id') id: string): void {
+    this.todoUseCase.remove(id);
   }
 }
