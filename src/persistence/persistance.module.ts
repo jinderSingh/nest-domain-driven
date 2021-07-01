@@ -1,12 +1,7 @@
-import { TodoPersistanceAdapter } from './adapters/todo.adapter';
-import { TodoAdapter } from '../domain/adapters/persistance/todo.adapter';
+import { TodoPersistanceModule } from './adapters/todo/todo-persistance.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
-const providers = [
-  { provide: TodoAdapter.INJECTION_KEY, useClass: TodoPersistanceAdapter },
-];
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -18,8 +13,8 @@ const providers = [
       }),
       inject: [ConfigService],
     }),
+    TodoPersistanceModule,
   ],
-  providers,
-  exports: [...providers],
+  exports: [TodoPersistanceModule],
 })
 export class PersistanceModule {}
