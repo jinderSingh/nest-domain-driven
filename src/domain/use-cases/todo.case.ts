@@ -8,29 +8,30 @@ import { TodoAdapter } from '../adapters/persistance/todo.adapter';
 export class TodoUseCase {
   constructor(private readonly persistanceAdapter: TodoAdapter) {}
 
-  add(todo: AddTodoCommand): void {
-    this.persistanceAdapter.add({
+  add(todo: AddTodoCommand): Promise<string> {
+    return this.persistanceAdapter.add({
       ...todo,
       id: null,
-      createdAt: null,
-      updateAt: null,
     });
   }
 
-  update(id: number, todo: UpdateTodoCommand): void {
-    const todoToUpdate = this.persistanceAdapter.findById(id);
-    this.persistanceAdapter.update(id, { ...todoToUpdate, ...todo });
+  update(id: string, todo: UpdateTodoCommand): Promise<string> {
+    return this.persistanceAdapter
+      .findById(id)
+      .then((todoToUpdate) =>
+        this.persistanceAdapter.update(id, { ...todoToUpdate, ...todo }),
+      );
   }
 
-  remove(id: number): void {
+  remove(id: string): void {
     this.persistanceAdapter.remove(id);
   }
 
-  findAll(): TodoEntity[] {
+  findAll(): Promise<TodoEntity[]> {
     return this.persistanceAdapter.findAll();
   }
 
-  findById(id: number): TodoEntity | undefined {
+  findById(id: string): Promise<TodoEntity | undefined> {
     return this.persistanceAdapter.findById(id);
   }
 }

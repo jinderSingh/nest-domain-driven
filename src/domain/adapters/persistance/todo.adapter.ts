@@ -4,9 +4,9 @@ export abstract class TodoAdapter {
   static readonly INJECTION_KEY = 'TodoAdapter';
 
   constructor() {}
-  abstract add(todo: TodoEntity): number;
-  abstract update(id: number, todo: TodoEntity): number;
-  abstract remove(id: number): void;
-  abstract findAll(): TodoEntity[];
-  abstract findById(id: number): TodoEntity | undefined;
+  abstract add(todo: TodoEntity): Promise<string>;
+  abstract update(id: string, todo: TodoEntity): Promise<string>;
+  abstract remove(id: string): void;
+  abstract findAll(): Promise<TodoEntity[]>;
+  abstract findById(id: string): Promise<TodoEntity | undefined>;
 }
