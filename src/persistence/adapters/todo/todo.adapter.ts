@@ -16,7 +16,9 @@ export class TodoPersistanceAdapter implements TodoAdapter {
   }
 
   remove(id: string): void {
-    this.todoModel.findByIdAndRemove(id);
+    this.todoModel
+      .findByIdAndRemove(id)
+      .then((res) => console.log(`Removed: ${id}`));
   }
 
   findAll(): Promise<TodoEntity[]> {
