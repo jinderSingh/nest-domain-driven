@@ -1,5 +1,5 @@
 import { TodoSchema } from './../../schemas/todo.schema';
-import { TodoPersistanceAdapter } from './todo.adapter';
+import { TodoPersistanceAdapter } from './todo-persistance.adapter';
 import { TodoAdapter } from '@domain/adapters/persistance/todo.adapter';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';

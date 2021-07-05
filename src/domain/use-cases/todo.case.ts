@@ -23,8 +23,8 @@ export class TodoUseCase {
       );
   }
 
-  remove(id: string): void {
-    this.persistanceAdapter.remove(id);
+  remove(id: string): Promise<boolean> {
+    return this.persistanceAdapter.remove(id);
   }
 
   findAll(): Promise<TodoEntity[]> {

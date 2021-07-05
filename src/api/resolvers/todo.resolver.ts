@@ -2,7 +2,7 @@ import { TodoUpdateCommand } from './../commands/todo-update.command';
 import { TodoCreateCommand } from './../commands/todo-create.command';
 import { TodoDto } from './../dto/todo.dto';
 import { TodoUseCase } from '@domain/use-cases/todo.case';
-import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
+import { Args, Resolver, Query, Mutation, ID } from '@nestjs/graphql';
 
 @Resolver((of) => TodoDto)
 export class TodoResolver {
@@ -25,14 +25,14 @@ export class TodoResolver {
 
   @Mutation(() => String)
   async update(
-    @Args('id') id: string,
+    @Args('id', { type: () => ID }) id: string,
     @Args('updateCommand') updateCommand: TodoUpdateCommand,
   ) {
     return this.todoUseCase.update(id, updateCommand);
   }
 
   @Mutation(() => Boolean)
-  async remove(@Args('id') id: string) {
-    this.todoUseCase.remove(id);
+  async remove(@Args('id', { type: () => ID }) id: string) {
+    return this.todoUseCase.remove(id);
   }
 }

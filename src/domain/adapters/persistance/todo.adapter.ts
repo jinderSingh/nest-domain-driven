@@ -6,7 +6,7 @@ export abstract class TodoAdapter {
   constructor() {}
   abstract add(todo: TodoEntity): Promise<string>;
   abstract update(id: string, todo: TodoEntity): Promise<string>;
-  abstract remove(id: string): void;
+  abstract remove(id: string): Promise<boolean>;
   abstract findAll(): Promise<TodoEntity[]>;
   abstract findById(id: string): Promise<TodoEntity | undefined>;
 }

@@ -15,10 +15,14 @@ export class TodoPersistanceAdapter implements TodoAdapter {
     return this.todoModel.findByIdAndUpdate(id, todo).then((res) => res.id);
   }
 
-  remove(id: string): void {
-    this.todoModel
-      .findByIdAndRemove(id)
-      .then((res) => console.log(`Removed: ${id}`));
+  async remove(id: string): Promise<boolean> {
+    try {
+      const removed = await this.todoModel.findByIdAndRemove(id);
+      return true;
+    } catch (e) {
+      console.log(`Error occured while removing element: `, e);
+      return false;
+    }
   }
 
   findAll(): Promise<TodoEntity[]> {
